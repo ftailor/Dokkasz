@@ -8,6 +8,7 @@
         Title="DOKK-ÁSZ" Width="800" Height="500" WindowState="Maximized">
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top" IsMainMenu="True">
+            <MenuItem Header="Plusz menü (Máté)"/>
             <MenuItem Header="_Adatbevitel">
                 <MenuItem Header="Törzsállományok">
                     <MenuItem Header="Számlák"/>
