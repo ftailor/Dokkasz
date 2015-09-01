@@ -1,18 +1,18 @@
-﻿<Window x:Class="dokkasz.MainWindow"
+﻿<Window x:Class="dokkasz.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dokkasz"
+        xmlns:views="clr-namespace:dokkasz.Views"
         mc:Ignorable="d"
         Title="DOKK-ÁSZ" Width="800" Height="500" WindowState="Maximized">
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top" IsMainMenu="True">
-            <MenuItem Header="ÚJ MENÜ (Máté)"/>
             <MenuItem Header="_Adatbevitel">
                 <MenuItem Header="Törzsállományok">
                     <MenuItem Header="Számlák"/>
-                    <MenuItem Header="Egységek"/>
+                    <MenuItem Header="Egységek" Click="EgysegTorzs_Click"/>
                     <MenuItem Header="Szállítók-vevők"/>
                     <MenuItem Header="Nyilvántartásba vett számlák"/>
                     <MenuItem Header="Finanszírozott intézmények"/>

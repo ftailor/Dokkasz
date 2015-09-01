@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace dokkasz
+namespace dokkasz.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,6 +23,11 @@ namespace dokkasz
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void EgysegTorzs_Click(object sender, RoutedEventArgs e)
+        {
+            new EgysegTorzsWindow().ShowDialog();
         }
     }
 }

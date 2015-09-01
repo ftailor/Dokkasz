@@ -1,9 +1,12 @@
-﻿<Application x:Class="dokkasz.App"
+<Application x:Class="dokkasz.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:dokkasz"
-             StartupUri="MainWindow.xaml">
+             xmlns:utilities="clr-namespace:dokkasz.Utilities"
+             StartupUri="Views\MainWindow.xaml">
     <Application.Resources>
-         
+        <utilities:BoolInverter x:Key="boolInverter" />
+        <utilities:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <utilities:OrConverter x:Key="orConverter" />
     </Application.Resources>
 </Application>
