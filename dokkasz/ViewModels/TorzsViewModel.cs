@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -30,12 +31,16 @@ namespace dokkasz.ViewModels
         private readonly ListCollectionView itemsView;
         private DokkaszEntities context;
         private readonly DelegateCommand loadCommand;
-        private readonly DelegateCommand editCommand;
+        private readonly DelegateCommand commitCommand;
+        private readonly DelegateCommand cancelCommand;
+        private readonly DelegateCommand reloadCommand;
+        //private readonly DelegateCommand editCommand;
+        private readonly DelegateCommand toggleEditCommand;
         //private readonly DelegateCommand<object> saveCommand;
         private readonly DelegateCommand<object> findCommand;
-        private bool isEditing;
+        private bool isInEditMode;
         private bool isLoading;
-        private bool isSaving;
+        //private bool isSaving;
 
         public ListCollectionView PropertiesView
         {
@@ -52,9 +57,31 @@ namespace dokkasz.ViewModels
             get { return loadCommand; }
         }
 
+        public DelegateCommand CommitCommand
+        {
+            get { return commitCommand; }
+        }
+
+        public DelegateCommand CancelCommand
+        {
+            get { return cancelCommand; }
+        }
+
+        public DelegateCommand ReloadCommand
+        {
+            get { return reloadCommand; }
+        }
+
+        /*
         public DelegateCommand EditCommand
         {
             get { return editCommand; }
+        }
+        */
+
+        public DelegateCommand ToggleEditCommand
+        {
+            get { return toggleEditCommand; }
         }
 
         /*
@@ -69,14 +96,20 @@ namespace dokkasz.ViewModels
             get { return findCommand; }
         }
 
-        public bool IsEditing
+        public bool IsInEditMode
         {
-            get { return isEditing; }
+            get { return isInEditMode; }
             private set
             {
-                SetProperty(ref isEditing, value);
-                EditCommand.RaiseCanExecuteChanged();
+                SetProperty(ref isInEditMode, value);
+                //ReloadCommand.RaiseCanExecuteChanged();
+                //EditCommand.RaiseCanExecuteChanged();
             }
+        }
+
+        public bool IsEditingItem
+        {
+            get { return ItemsView.IsEditingItem || ItemsView.IsAddingNew; }
         }
 
         public bool IsLoading
@@ -85,14 +118,19 @@ namespace dokkasz.ViewModels
             private set
             {
                 SetProperty(ref isLoading, value);
-                EditCommand.RaiseCanExecuteChanged();
+                CommitCommand.RaiseCanExecuteChanged();
+                CancelCommand.RaiseCanExecuteChanged();
+                ReloadCommand.RaiseCanExecuteChanged();
+                //EditCommand.RaiseCanExecuteChanged();
+                ToggleEditCommand.RaiseCanExecuteChanged();
             }
         }
 
         public bool IsSaving
         {
-            get { return isSaving; }
-            private set { SetProperty(ref isSaving, value); }
+            get { return false; }
+            //get { return isSaving; }
+            //private set { SetProperty(ref isSaving, value); }
         }
 
         public TorzsViewModel(Func<DokkaszEntities, IQueryable> query, Func<object, TViewModel> wrap)
@@ -112,11 +150,29 @@ namespace dokkasz.ViewModels
             items = new ObservableCollection<TViewModel>();
             items.CollectionChanged += ItemsChanged;
             itemsView = new ListCollectionView(items);
+            (ItemsView as INotifyPropertyChanged).PropertyChanged += ItemsView_PropertyChanged;
             context = new DokkaszEntities();
             loadCommand = DelegateCommand.FromAsyncHandler(LoadAsync);
-            editCommand = new DelegateCommand(() => IsEditing = true, () => !IsEditing && !IsLoading);
+            commitCommand = new DelegateCommand(CommitEdit, () => IsEditingItem && !IsLoading);
+            cancelCommand = new DelegateCommand(CancelEdit, () => IsEditingItem && !IsLoading);
+            reloadCommand = DelegateCommand.FromAsyncHandler(ReloadAsync, () => !IsEditingItem && !IsLoading);
+            //editCommand = new DelegateCommand(() => IsEditing = true, () => !IsEditing && !IsLoading);
+            toggleEditCommand = new DelegateCommand(ToggleEdit, () => !IsEditingItem && !IsLoading);
             //saveCommand = new DelegateCommand<object>(Save);
             findCommand = new DelegateCommand<object>(Find);
+        }
+
+        private void ItemsView_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(IEditableCollectionView.IsEditingItem)
+                || e.PropertyName == nameof(IEditableCollectionView.IsAddingNew))
+            {
+                OnPropertyChanged(nameof(IsEditingItem));
+                CommitCommand.RaiseCanExecuteChanged();
+                CancelCommand.RaiseCanExecuteChanged();
+                ReloadCommand.RaiseCanExecuteChanged();
+                ToggleEditCommand.RaiseCanExecuteChanged();
+            }
         }
 
         /*
@@ -156,8 +212,6 @@ namespace dokkasz.ViewModels
             {
                 items.Add(wrap(entity));
             }
-
-            
         }
 
         private async Task ReloadAsync()
@@ -166,6 +220,35 @@ namespace dokkasz.ViewModels
             context.Dispose();
             context = new DokkaszEntities();
             await LoadAsync();
+        }
+
+        private void ToggleEdit()
+        {
+            IsInEditMode = !IsInEditMode;
+        }
+
+        private void CommitEdit()
+        {
+            if (ItemsView.IsEditingItem && !((TViewModel)ItemsView.CurrentEditItem).HasErrors)
+            {
+                ItemsView.CommitEdit();
+            }
+            else if (ItemsView.IsAddingNew && !((TViewModel)ItemsView.CurrentAddItem).HasErrors)
+            {
+                ItemsView.CommitNew();
+            }
+        }
+
+        private void CancelEdit()
+        {
+            if (ItemsView.IsEditingItem)
+            {
+                ItemsView.CancelEdit();
+            }
+            else if (ItemsView.IsAddingNew)
+            {
+                ItemsView.CancelNew();
+            }
         }
 
         public void Find(object value)

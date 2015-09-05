@@ -10,6 +10,9 @@
              xmlns:util="clr-namespace:dokkasz.Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <util:BoolToStringConverter x:Key="toggleEditButtonContent" TrueValue="Szerkesztés vége" FalseValue="Szerkesztés" />
+    </UserControl.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" />
@@ -19,6 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -42,7 +46,7 @@
             <DataGrid x:Name="dataGrid" ItemsSource="{Binding ItemsView}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsSynchronizedWithCurrentItem="True" IsEnabled="{Binding IsLoading, Converter={StaticResource boolInverter}}" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False">
                 <DataGrid.IsReadOnly>
                     <MultiBinding Converter="{StaticResource orConverter}">
-                        <Binding Path="IsEditing" Converter="{StaticResource boolInverter}" />
+                        <Binding Path="IsInEditMode" Converter="{StaticResource boolInverter}" />
                         <Binding Path="IsSaving" />
                     </MultiBinding>
                 </DataGrid.IsReadOnly>
@@ -76,7 +80,15 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
-            <Button Content="Szerkesztés" Command="{Binding EditCommand}" Width="75" VerticalAlignment="Center" />
+            <Button Content="Mentés" IsEnabled="{Binding IsEditingItem}" Focusable="False" Width="75" VerticalAlignment="Center" />
+            <Button Content="Mégse" IsEnabled="{Binding IsEditingItem}" Focusable="False" Width="75" Margin="10,0,0,0" VerticalAlignment="Center" />
+        </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
+            <Button Content="Frissítés" Command="{Binding ReloadCommand}" Width="75" VerticalAlignment="Center" />
+            <!--
+            <Button Content="Szerkesztés" Command="{Binding EditCommand}" Width="75" Margin="10,0,0,0" VerticalAlignment="Center" />
+            -->
+            <Button Content="{Binding IsInEditMode, Converter={StaticResource toggleEditButtonContent}}" Command="{Binding ToggleEditCommand}" Width="100" Margin="10,0,0,0" VerticalAlignment="Center" />
         </StackPanel>
     </Grid>
 </UserControl>

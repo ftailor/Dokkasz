@@ -84,6 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Utilities\BoolInverter.cs" />
+    <Compile Include="Utilities\BoolToStringConverter.cs" />
     <Compile Include="Utilities\BoolToVisibilityConverter.cs" />
     <Compile Include="Utilities\OrConverter.cs" />
     <Compile Include="Utilities\ScrollIntoViewBehavior.cs" />
