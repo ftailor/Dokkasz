@@ -15,8 +15,18 @@
           <Property Name="Afa" Type="bit" Nullable="false" />
           <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
+        <EntityType Name="TesztTorzs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nev" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fizetes" Type="int" />
+          <Property Name="Datum" Type="date" />
+        </EntityType>
         <EntityContainer Name="DokkaszModelStoreContainer">
           <EntitySet Name="EgysegTorzs" EntityType="Self.EgysegTorzs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TesztTorzs" EntityType="Self.TesztTorzs" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -34,7 +44,17 @@
         </EntityType>
         <EntityContainer Name="DokkaszEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="EgysegTorzs" EntityType="DokkaszModel.Egyseg" />
+          <EntitySet Name="TesztTorzs" EntityType="DokkaszModel.Teszt" />
         </EntityContainer>
+        <EntityType Name="Teszt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nev" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fizetes" Type="Int32" />
+          <Property Name="Datum" Type="DateTime" Precision="0" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -52,6 +72,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+          <EntitySetMapping Name="TesztTorzs">
+            <EntityTypeMapping TypeName="DokkaszModel.Teszt">
+              <MappingFragment StoreEntitySet="TesztTorzs">
+                <ScalarProperty Name="Datum" ColumnName="Datum" />
+                <ScalarProperty Name="Fizetes" ColumnName="Fizetes" />
+                <ScalarProperty Name="Nev" ColumnName="Nev" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="dd37204ac0214c3fbaac7c3bda54f7b3" Name="Diagram1">
         <EntityTypeShape EntityType="DokkaszModel.Egyseg" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DokkaszModel.Test" Width="1.5" PointX="6" PointY="2.25" />
+        <EntityTypeShape EntityType="DokkaszModel.Teszt" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

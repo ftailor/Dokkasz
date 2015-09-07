@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Practices.Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,29 +11,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace dokkasz.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TestWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TestWindow : Window, IView
     {
-        public MainWindow()
+        public TestWindow()
         {
             InitializeComponent();
-        }
-
-        private void EgysegTorzs_Click(object sender, RoutedEventArgs e)
-        {
-            new EgysegTorzsWindow().ShowDialog();
-        }
-
-        private void Teszt_Click(object sender, RoutedEventArgs e)
-        {
-            new TestWindow().ShowDialog();
         }
     }
 }

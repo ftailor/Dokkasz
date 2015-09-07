@@ -26,5 +26,6 @@ namespace dokkasz.Model
         }
     
         public virtual DbSet<Egyseg> EgysegTorzs { get; set; }
+        public virtual DbSet<Teszt> TesztTorzs { get; set; }
     }
 }

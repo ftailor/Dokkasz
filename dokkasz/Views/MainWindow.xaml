@@ -11,6 +11,7 @@
         <Menu x:Name="menu" VerticalAlignment="Top" IsMainMenu="True">
             <MenuItem Header="_Adatbevitel">
                 <MenuItem Header="Törzsállományok">
+                    <MenuItem Header="Teszt" Click="Teszt_Click" />
                     <MenuItem Header="Számlák"/>
                     <MenuItem Header="Egységek" Click="EgysegTorzs_Click"/>
                     <MenuItem Header="Szállítók-vevők"/>

@@ -83,6 +83,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Teszt.cs">
+      <DependentUpon>DokkaszModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\BoolInverter.cs" />
     <Compile Include="Utilities\BoolToStringConverter.cs" />
     <Compile Include="Utilities\BoolToVisibilityConverter.cs" />
@@ -92,7 +95,12 @@
     <Compile Include="ViewModels\EgysegViewModel.cs" />
     <Compile Include="ViewModels\EntityViewModel.cs" />
     <Compile Include="Utilities\PropertyAdapter.cs" />
+    <Compile Include="ViewModels\TestWindowViewModel.cs" />
+    <Compile Include="ViewModels\TesztViewModel.cs" />
     <Compile Include="ViewModels\TorzsViewModel.cs" />
+    <Compile Include="Views\TestWindow.xaml.cs">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TorzsView.xaml.cs">
       <DependentUpon>TorzsView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +141,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TorzsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
